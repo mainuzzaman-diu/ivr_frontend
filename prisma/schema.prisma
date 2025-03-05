@@ -1,0 +1,56 @@
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            Int           @id @default(autoincrement())
+  name          String?
+  email         String        @unique
+  password      String
+  accounts      Account[]
+  sessions      Session[]
+  chatHistories ChatHistory[]
+}
+
+model Account {
+  id                Int    @id @default(autoincrement())
+  userId            Int
+  provider          String
+  providerAccountId String
+  user              User   @relation(fields: [userId], references: [id])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  expires      DateTime
+}
+
+model VerificationToken {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+}
+
+
+model ChatHistory {
+  id        Int      @id @default(autoincrement())
+  // userId must be an Int if it references an Int primary key in User
+  userId    Int
+
+  timestamp DateTime @default(now())
+  message   String
+  response  String
+
+  // Proper relation to the User model
+  user      User     @relation(fields: [userId], references: [id])
+}

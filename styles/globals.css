@@ -1,0 +1,12 @@
+/* styles/globals.css */
+body {
+  background: #f8f9fa;
+  /* a light gray from Bootstrap palette */
+  /* Or a soft gradient example:
+  background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  */
+}
+
+.card {
+  border-radius: 8px;
+}
