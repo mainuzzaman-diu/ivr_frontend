@@ -20,24 +20,43 @@ export default function Dashboard() {
     }
   }, [status, router]);
 
+  // useEffect(() => {
+  //   const fetchChats = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const res = await fetch(`/api/chat?search=${search}&page=${page}`);
+  //       const data = await res.json();
+  //       setChatHistory(data.chatHistory);
+  //       setTotalPages(data.totalPages);
+  //     } catch (error) {
+  //       console.error("Failed to fetch chat history:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   if (status === "authenticated") {
+  //     fetchChats();
+  //   }
+  // }, [search, page, status]);
   useEffect(() => {
     const fetchChats = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/chat?search=${search}&page=${page}`);
+        const res = await fetch(`http://localhost:8000/chat-history?user_id=default_user`);
         const data = await res.json();
-        setChatHistory(data.chatHistory);
-        setTotalPages(data.totalPages);
+        console.log("Data is: ", data);
+        setChatHistory(data.history);  // API returns history array
       } catch (error) {
         console.error("Failed to fetch chat history:", error);
       } finally {
         setIsLoading(false);
       }
     };
+
     if (status === "authenticated") {
       fetchChats();
     }
-  }, [search, page, status]);
+  }, [status]);
 
   if (status === "loading") {
     return <div className="text-center mt-5">Loading...</div>;
@@ -47,7 +66,7 @@ export default function Dashboard() {
     <div className="d-flex min-vh-100 bg-light">
       {/* Sidebar */}
       <div className="bg-white shadow-sm p-4" style={{ width: "250px" }}>
-        <Image src="/logo.png" alt="Logo" width={120} height={40} />
+        <Image src="/logo.png" alt="Logo" width={60} height={60} />
         <nav className="mt-4">
           <ul className="list-unstyled">
             <li className="text-primary fw-bold d-flex align-items-center gap-2">
@@ -74,7 +93,7 @@ export default function Dashboard() {
         <div className="mt-4">
           <h5 className="fw-semibold">Recent Chats</h5>
           <input type="text" className="form-control my-3" placeholder="Search chats..." value={search} onChange={(e) => setSearch(e.target.value)} />
-          <div className="card p-3 shadow-sm">
+          {/* <div className="card p-3 shadow-sm">
             {isLoading ? (
               <div className="text-center">Loading...</div>
             ) : (
@@ -96,7 +115,48 @@ export default function Dashboard() {
                 )}
               </div>
             )}
+          </div> */}
+          {/* <div className="card p-3 shadow-sm">
+            {isLoading ? (
+              <div className="text-center">Loading...</div>
+            ) : (
+              <div className="chat-grid">
+                {chatHistory.length === 0 ? (
+                  <div className="text-center p-3">No chat history found.</div>
+                ) : (
+                  chatHistory.map((chat, index) => (
+                    <div key={index} className="border p-3 mb-2 rounded bg-white shadow-sm">
+                      <p><strong>Chat:</strong> {chat}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div> */}
+          <div className="card p-3 shadow-sm">
+            {isLoading ? (
+              <div className="text-center">Loading...</div>
+            ) : (
+              <div className="chat-grid">
+                {chatHistory.length === 0 ? (
+                  <div className="text-center p-3">No chat history found.</div>
+                ) : (
+                  chatHistory.map((chat) => (
+                    <div key={chat.id} className="border p-3 mb-2 rounded bg-white shadow-sm">
+                      <div className="d-flex justify-content-between">
+                        <span className="fw-bold">Chat ID: {chat.id}</span>
+                        <span className="text-muted">{new Date(chat.timestamp * 1000).toLocaleString()}</span>
+                      </div>
+                      <p className="mt-2"><strong>Message:</strong> {chat.message}</p>
+                      <p><strong>Response:</strong> {chat.response}</p>
+                      <p><strong>Summary:</strong> {chat.summary}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </div>
+
 
           {/* Pagination */}
           <div className="d-flex justify-content-between align-items-center mt-3">
