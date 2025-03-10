@@ -37,7 +37,34 @@ export default function Dashboard() {
       setIsLoading(false); // Hide loading animation
     }
   };
+  const [loadingSummaryFor, setLoadingSummaryFor] = useState(null);
 
+  // Generate summary for a specific chat
+  const handleGenerateSummary = async (chatId) => {
+    try {
+      setLoadingSummaryFor(chatId);
+      const response = await fetch("http://localhost:8000/generate-summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, user_id: userId }),
+      });
+      const data = await response.json();
+      if (data.summary) {
+        // Update the summary in the local state
+        const updatedChats = chatHistory.map((chat) => {
+          if (chat.id === chatId) {
+            return { ...chat, summary: data.summary };
+          }
+          return chat;
+        });
+        setChatHistory(updatedChats);
+      }
+    } catch (error) {
+      console.error("Failed to generate summary:", error);
+    } finally {
+      setLoadingSummaryFor(null);
+    }
+  };
   if (status === "loading") {
     return <div className="text-center mt-5">Loading...</div>;
   }
@@ -94,7 +121,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="chat-grid">
-                {chatHistory.length === 0 ? (
+                {!chatHistory || chatHistory.length === 0 ? (
                   <div className="text-center p-3">No chat history found.</div>
                 ) : (
                   chatHistory.map((chat) => (
@@ -105,7 +132,36 @@ export default function Dashboard() {
                       </div>
                       <p className="mt-2"><strong>Message:</strong> {chat.message}</p>
                       <p><strong>Response:</strong> {chat.response}</p>
-                      <p><strong>Summary:</strong> {chat.summary}</p>
+                      <p>
+                        <strong>Cost (Estimated):</strong>{" "}
+                        {(chat.total_cost ?? 0).toFixed(6)}$
+                      </p>
+
+                      {/* <p><strong>Summary:</strong> {chat.summary}</p> */}
+                      <p>
+                        <strong>Summary:</strong>{" "}
+                        {chat.summary ? chat.summary : "No summary yet."}
+                      </p>
+                      {/* <button
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => handleGenerateSummary(chat.id)}
+                      >
+                        Generate Summary
+                      </button> */}
+                      <button
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => handleGenerateSummary(chat.id)}
+                        disabled={loadingSummaryFor === chat.id}
+                      >
+                        {loadingSummaryFor === chat.id ? (
+                          <>
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                            &nbsp;Generating...
+                          </>
+                        ) : (
+                          "Generate Summary"
+                        )}
+                      </button>
                     </div>
                   ))
                 )}
