@@ -107,7 +107,7 @@ export default function Dashboard() {
           <div className="row">
             <div className="col-12 col-md-6">
               <h5 className="fw-semibold">Search Chats by User ID</h5>
-              <div className="input-group my-3">
+              {/* <div className="input-group my-3">
                 <input
                   type="text"
                   className="form-control"
@@ -118,7 +118,29 @@ export default function Dashboard() {
                 <button className="btn btn-primary" onClick={fetchChats}>
                   Search
                 </button>
-              </div>
+              </div> */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault(); // Prevents page reload
+                  fetchChats(); // Calls the fetchChats function
+                }}
+                className="d-flex"
+              >
+                <input
+                  type="text"
+                  className="form-control my-3"
+                  placeholder="Enter User ID..."
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="btn btn-primary ms-2 my-3"
+                >
+                  Search
+                </button>
+              </form>
+
             </div>
           </div>
 
@@ -163,7 +185,7 @@ export default function Dashboard() {
                     </div>
                     <div className="card-footer bg-white text-end">
                       <button
-                        className="btn btn-sm btn-outline-secondary"
+                        className="btn btn-primary rounded-pill px-4 fw-semibold"
                         onClick={() => handleGenerateSummary(chat.id)}
                         disabled={loadingSummaryFor === chat.id}
                       >
