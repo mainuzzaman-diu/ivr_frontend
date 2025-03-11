@@ -10,3 +10,13 @@ body {
 .card {
   border-radius: 8px;
 }
+
+.btn-gradient {
+  background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+  border: none;
+  color: #fff;
+}
+
+.btn-gradient:hover {
+  opacity: 0.9;
+}

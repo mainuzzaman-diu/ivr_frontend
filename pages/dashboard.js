@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { BarChart, Users } from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Loader2 } from "lucide-react";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -184,7 +185,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <div className="card-footer bg-white text-end">
-                      <button
+                      {/* <button
                         className="btn btn-primary rounded-pill px-4 fw-semibold"
                         onClick={() => handleGenerateSummary(chat.id)}
                         disabled={loadingSummaryFor === chat.id}
@@ -201,7 +202,15 @@ export default function Dashboard() {
                         ) : (
                           "Generate Summary"
                         )}
+                      </button> */}
+                      <button
+                        className="btn btn-gradient rounded-pill px-4 fw-semibold"
+                        onClick={() => handleGenerateSummary(chat.id)}
+                        disabled={loadingSummaryFor === chat.id}
+                      >
+                        {loadingSummaryFor === chat.id ? "Generating..." : "Generate Summary"}
                       </button>
+
                     </div>
                   </div>
                 </div>
