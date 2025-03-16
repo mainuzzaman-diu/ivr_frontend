@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { BarChart, Users } from "lucide-react";
+import { BarChart, Users, FilePlus } from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Loader2 } from "lucide-react";
 
@@ -71,7 +71,7 @@ export default function Dashboard() {
   return (
     <div className="d-flex bg-light" style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
-      <div className="bg-white shadow-sm p-4" style={{ width: "250px" }}>
+      {/* <div className="bg-white shadow-sm p-4" style={{ width: "250px" }}>
         <Image src="/logo.png" alt="Logo" width={60} height={60} />
         <nav className="mt-4">
           <ul className="list-unstyled">
@@ -81,9 +81,16 @@ export default function Dashboard() {
             <li className="d-flex align-items-center gap-2">
               <Users size={20} /> Teams
             </li>
+            <li className="text-primary fw-bold d-flex align-items-center gap-2 mb-3">
+              <FilePlus size={20} />
+              <a href="/upload-file" className="text-decoration-none">
+                Upload File
+              </a>
+            </li>
+
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="flex-grow-1 p-4">
