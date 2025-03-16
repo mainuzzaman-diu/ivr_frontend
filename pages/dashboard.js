@@ -96,7 +96,7 @@ export default function Dashboard() {
       <div className="flex-grow-1 p-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1 className="h4 fw-bold mb-0">Dashboard</h1>
-          <div className="d-flex align-items-center gap-3">
+          {/* <div className="d-flex align-items-center gap-3">
             <Image
               src={session?.user?.image || "/user.png"}
               alt="User"
@@ -107,7 +107,7 @@ export default function Dashboard() {
             <button className="btn btn-danger" onClick={() => signOut()}>
               Logout
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Container for search input & results */}

@@ -1,8 +1,25 @@
-import React, { useState } from "react";
+// pages/upload-file.js
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 
 export default function UploadFilePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // Redirect unauthenticated users to the login page
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
+
+  if (status === "loading") {
+    return <div className="text-center mt-5">Checking authentication...</div>;
+  }
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -10,25 +27,21 @@ export default function UploadFilePage() {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-
     if (!selectedFile) {
       alert("Please select a file first!");
       return;
     }
 
-    // Prepare form data
     const formData = new FormData();
     formData.append("file", selectedFile);
 
     try {
-      // Make sure this URL matches your FastAPI "upload" endpoint
-      const res = await fetch("http://localhost:8000/upload-file", {
+      const res = await fetch("http://localhost:8001/upload-file", {
         method: "POST",
         body: formData,
       });
 
       if (!res.ok) {
-        // Attempt to parse error details from the response
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.detail || "Upload failed");
       }
@@ -41,7 +54,7 @@ export default function UploadFilePage() {
   };
 
   return (
-    <div className="container py-5">
+    <div>
       <h2 className="mb-4">Upload File</h2>
       <form onSubmit={handleUpload}>
         <div className="mb-3">

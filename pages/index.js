@@ -99,9 +99,7 @@ export default function Home() {
       </form>
       <hr />
       <p>
-        {isRegister
-          ? "Already have an account?"
-          : "Don't have an account?"}{" "}
+        {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
         <button
           className="btn btn-link p-0"
           onClick={() => setIsRegister(!isRegister)}
@@ -112,3 +110,6 @@ export default function Home() {
     </div>
   );
 }
+
+// Disable sidebar layout for this page
+Home.noLayout = true;
