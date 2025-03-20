@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { BarChart, Users, FilePlus } from "lucide-react";
+import { BarChart, Users, FilePlus, MessageSquare } from "lucide-react";
 
 export default function Layout({ children }) {
   const { data: session, status } = useSession(); // Get session data
@@ -20,9 +20,9 @@ export default function Layout({ children }) {
                 <BarChart size={20} /> Dashboard
               </Link>
             </li>
-            <li className="d-flex align-items-center gap-2">
-              <Link href="/teams" className="text-decoration-none d-flex align-items-center gap-2">
-                <Users size={20} /> Teams
+            <li className="text-primary fw-bold d-flex align-items-center gap-2 mt-3">
+              <Link href="/upload_qa" className="text-decoration-none d-flex align-items-center gap-2">
+                <MessageSquare size={20} /> Upload Q&A
               </Link>
             </li>
             <li className="text-primary fw-bold d-flex align-items-center gap-2 mt-3">

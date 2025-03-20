@@ -83,7 +83,7 @@ export default function UploadQA() {
               >
                 <option value="faq">FAQ</option>
                 <option value="tuition">Tuition</option>
-                <option value="general">General</option>
+                <option value="eligibility">Eligibility</option>
               </select>
             </div>
 
